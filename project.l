@@ -1,9 +1,9 @@
 %{
-
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include "project.tab.h"
+int yyerror(void);
 bool idValid(char);
 void censorId(char*);
 void censorInt(char*);

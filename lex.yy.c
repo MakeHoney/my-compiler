@@ -458,11 +458,11 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "project.l"
 #line 2 "project.l"
-
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include "project.tab.h"
+int yyerror(void);
 bool idValid(char);
 void censorId(char*);
 void censorInt(char*);
