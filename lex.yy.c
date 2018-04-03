@@ -1808,9 +1808,17 @@ bool isValid(char c) {
 }
 
 void censorId(char* text) {
+	/* 길이가 16 이상일 때는 우선적으로 길이 16으로 맞춰준다. */
+	if(strlen(text) > 16) text[16] = '\0';
+
+	/* 길이를 재정의 */
 	int length = strlen(text);
 	int _cnt = 0;
+
+	/* 첫 글자 기준으로 valid여부 검사 */
 	if(!isValid(text[0]))	yyerror();	
+
+	/* 위 조건검사 통과시 _로만 이루어진 identifier를 거른다 */
 	else {
 		for(int i = 0 ; i < length ; i++)
 			if(text[i] == '_') _cnt++;
