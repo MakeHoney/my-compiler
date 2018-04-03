@@ -53,7 +53,7 @@ void censorId(char* text) {
 	else {
 		for(int i = 0 ; i < length ; i++)
 			if(text[i] == '_') _cnt++;
-		if(strlen(text) == _cnt) yyerror();
+		if(length == _cnt) yyerror();
 	}
 }
 // 소수에도 위와같은 조건검사가 필요한지 짚어보기.
