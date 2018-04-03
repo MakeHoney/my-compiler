@@ -360,8 +360,8 @@ static void yynoreturn yy_fatal_error (yyconst char* msg  );
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 6
-#define YY_END_OF_BUFFER 7
+#define YY_NUM_RULES 7
+#define YY_END_OF_BUFFER 8
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -371,8 +371,8 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[21] =
     {   0,
-        0,    0,    7,    5,    1,    1,    5,    5,    2,    4,
-        1,    0,    2,    3,    2,    4,    0,    0,    3,    0
+        0,    0,    8,    6,    2,    2,    1,    6,    6,    3,
+        4,    2,    0,    3,    5,    4,    0,    0,    5,    0
     } ;
 
 static yyconst YY_CHAR yy_ec[256] =
@@ -380,17 +380,17 @@ static yyconst YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    2,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    4,    1,    4,    5,    1,    6,    6,    6,
-        6,    6,    6,    6,    6,    6,    6,    1,    1,    1,
-        1,    1,    1,    1,    7,    7,    7,    7,    8,    7,
-        7,    7,    7,    7,    7,    7,    7,    7,    7,    7,
-        7,    7,    7,    7,    7,    7,    7,    7,    7,    7,
-        1,    1,    1,    1,    7,    1,    7,    7,    7,    7,
+        1,    2,    1,    4,    1,    1,    1,    1,    1,    1,
+        1,    1,    5,    1,    5,    6,    1,    7,    7,    7,
+        7,    7,    7,    7,    7,    7,    7,    1,    1,    1,
+        1,    1,    1,    1,    8,    8,    8,    8,    9,    8,
+        8,    8,    8,    8,    8,    8,    8,    8,    8,    8,
+        8,    8,    8,    8,    8,    8,    8,    8,    8,    8,
+       10,   10,   10,   10,    8,   10,    8,    8,    8,    8,
 
-        8,    7,    7,    7,    7,    7,    7,    7,    7,    7,
-        7,    7,    7,    7,    7,    7,    7,    7,    7,    7,
-        7,    7,    1,    9,    1,    1,    1,    1,    1,    1,
+        9,    8,    8,    8,    8,    8,    8,    8,    8,    8,
+        8,    8,    8,    8,    8,    8,    8,    8,    8,    8,
+        8,    8,    1,   11,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -407,38 +407,39 @@ static yyconst YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static yyconst YY_CHAR yy_meta[10] =
+static yyconst YY_CHAR yy_meta[12] =
     {   0,
-        1,    2,    2,    1,    1,    3,    3,    3,    1
+        1,    2,    2,    1,    1,    1,    3,    3,    3,    1,
+        1
     } ;
 
 static yyconst flex_uint16_t yy_base[23] =
     {   0,
-        0,    0,   26,   27,    0,    0,    5,   19,    7,    0,
-        0,   18,    0,   10,    0,    0,   15,   17,   16,   27,
-       18,   14
+        0,    0,   24,   25,    0,    0,   25,    6,   16,    0,
+        0,    0,   15,    0,    7,    0,   12,   14,   13,   25,
+       16,   12
     } ;
 
 static yyconst flex_int16_t yy_def[23] =
     {   0,
-       20,    1,   20,   20,   21,   21,   20,   20,   20,   22,
-       21,   20,    7,   20,    9,   22,   20,   20,   20,    0,
+       20,    1,   20,   20,   21,   21,   20,   20,   20,    8,
+       22,   21,   20,    8,   20,   22,   20,   20,   20,    0,
        20,   20
     } ;
 
 static yyconst flex_uint16_t yy_nxt[37] =
     {   0,
-        4,    5,    6,    7,    8,    9,   10,   10,    7,   12,
-       13,   12,   15,   16,   16,   14,   16,   17,   18,   11,
-       19,   19,   19,   14,   14,   20,    3,   20,   20,   20,
+        4,    5,    6,    7,    8,    9,   10,   11,   11,   11,
+        8,   13,   14,   15,   16,   17,   18,   12,   19,   19,
+       19,   15,   15,   20,    3,   20,   20,   20,   20,   20,
        20,   20,   20,   20,   20,   20
     } ;
 
 static yyconst flex_int16_t yy_chk[37] =
     {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    7,
-        7,    9,    9,    9,    9,   14,   22,   14,   17,   21,
-       17,   19,   18,   12,    8,    3,   20,   20,   20,   20,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    8,    8,   15,   22,   15,   17,   21,   17,   19,
+       18,   13,    9,    3,   20,   20,   20,   20,   20,   20,
        20,   20,   20,   20,   20,   20
     } ;
 
@@ -463,7 +464,6 @@ char *yytext;
 #include <stdbool.h>
 #include "project.tab.h"
 int yyerror(void);
-bool idValid(char);
 void censorId(char*);
 void censorInt(char*);
 int yynumber = 0;
@@ -685,10 +685,9 @@ YY_DECL
 		}
 
 	{
-#line 13 "project.l"
+#line 12 "project.l"
 
-
-#line 692 "lex.yy.c"
+#line 691 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -721,7 +720,7 @@ yy_match:
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (flex_int16_t) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 27 );
+		while ( yy_base[yy_current_state] != 25 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -746,12 +745,17 @@ do_action:	/* This label is used only to access EOF actions. */
 			goto yy_find_action;
 
 case 1:
-/* rule 1 can match eol */
 YY_RULE_SETUP
-#line 15 "project.l"
-{ ; }
+#line 13 "project.l"
+
 	YY_BREAK
 case 2:
+/* rule 2 can match eol */
+YY_RULE_SETUP
+#line 14 "project.l"
+{ ; }
+	YY_BREAK
+case 3:
 YY_RULE_SETUP
 #line 16 "project.l"
 {	
@@ -759,14 +763,9 @@ YY_RULE_SETUP
 											printf("<INTEGER>\t\t%s\n", yytext); 
 										} 
 	YY_BREAK
-case 3:
-YY_RULE_SETUP
-#line 20 "project.l"
-{ printf("<FLOAT>\t\t%s\n", yytext); }
-	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 21 "project.l"
+#line 20 "project.l"
 {
 											censorId(yytext);
 		                     				//_만 있으면 무시
@@ -775,15 +774,20 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 26 "project.l"
-{ yyerror(); }
+#line 25 "project.l"
+{ printf("<FLOAT>\t\t%s\n", yytext); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 28 "project.l"
+#line 27 "project.l"
+{ yyerror(); }
+	YY_BREAK
+case 7:
+YY_RULE_SETUP
+#line 29 "project.l"
 ECHO;
 	YY_BREAK
-#line 787 "lex.yy.c"
+#line 791 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1784,7 +1788,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 28 "project.l"
+#line 29 "project.l"
 
 
 
@@ -1804,15 +1808,8 @@ int yyerror(void)
 	    printf("Error\n");
 		    exit(1);
 }
-
-bool idValid(char c) {
-	if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_')
-		return true;
-	else
-		return false;
-}
-
 void censorId(char* text) {
+	printf("in censorId\n");
 	/* 길이가 16 이상일 때는 우선적으로 길이 16으로 맞춰준다. */
 	if(strlen(text) > 16) text[16] = '\0';
 
@@ -1820,21 +1817,16 @@ void censorId(char* text) {
 	int length = strlen(text);
 	int _cnt = 0;
 
-	/* 첫 글자 기준으로 valid여부 검사 */
-	if(!idValid(text[0]))	yyerror();	
+	/* _로만 이루어진 identifier를 거른다 */
 
-	/* 위 조건검사 통과시 _로만 이루어진 identifier를 거른다 */
-	else {
-		for(int i = 0 ; i < length ; i++)
-			if(text[i] == '_') _cnt++;
-		if(length == _cnt) yyerror();
-	}
+	for(int i = 0 ; i < length ; i++)
+		if(text[i] == '_') _cnt++;
+	if(length == _cnt) yyerror();
 }
 // 소수에도 위와같은 조건검사가 필요한지 짚어보기.
 void censorInt(char* text) {
 	/* 길이가 10 이상일 때는 나머지 cut */
 	if(strlen(text) > 10) text[10] = '\0';
 }
-
 
 
