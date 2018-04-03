@@ -5,8 +5,10 @@
 #include "project.tab.h"
 #define MAX_DBNUM	1000
 #define STR_LENG	20
+
 int yyerror(void);
 void censorId(char*);
+void censorStr(char*);
 void censorInt(char*);
 void censorSpec(char*);
 void censorOper(char*);
@@ -34,7 +36,7 @@ int str_ptr = 0;
 
 [+\-*/=]|(and)|(or)|(eq)|(gt)			{ censorOper(yytext); }
 
-\".*\"									{ printf("<STRING>\t\t%s\n", yytext); }
+\".*\"									{ censorStr(yytext); }
 
 
 [a-zA-z_][a-zA-Z0-9_]*					{ censorId(yytext); }
@@ -75,6 +77,7 @@ void censorId(char* text) {
 					"else", "eq", "gt", "if", "or", 
 					"print", "return", "while", "identifier"};
 	bool isKeyword = false;
+	bool idAppear = false;
 	int idx = 0;
 
 	/* 길이가 16 이상일 때는 우선적으로 길이 16으로 맞춰준다. */
@@ -82,7 +85,6 @@ void censorId(char* text) {
 
 	/* 길이를 재정의 */
 	int length = strlen(text);
-	int idAppear = false;
 	int _cnt = 0;
 
 	/* _로만 이루어진 identifier를 거른다 */
@@ -110,7 +112,6 @@ void censorId(char* text) {
 	/* 인덱싱 */
 	for(int i = 0 ; i < MAX_DBNUM ; i++) {
 		if(!(strcmp(text, id_table[i]))) {
-			printf("in\n");
 			idAppear = true;
 			idx = i;
 			break;
@@ -124,6 +125,27 @@ void censorId(char* text) {
 		printf("<ID, %d>\t\t%s\n", idx, text);
 	}
 
+}
+
+void censorStr(char* text) {
+	/* censorId의 인덱싱과 동일 알고리즘 */
+	bool strAppear = false;
+	int idx = 0;
+
+	for(int i = 0 ; i < MAX_DBNUM ; i++) {
+		if(!(strcmp(text, str_table[i]))) {
+			strAppear = true;
+			idx = i;
+			break;
+		}
+	}
+
+	if(!strAppear) {
+		strcpy(str_table[++str_ptr], text);
+		printf("<STRING, %d>\t\t%s\n", str_ptr, text);
+	} else {
+		printf("<STRING, %d>\t\t%s\n", idx, text);
+	}
 }
 
 void censorInt(char* text) {
