@@ -14,7 +14,8 @@ int yynumber = 0;
 %%
 
 [ \t\n]+								{ ; }
-
+(\/\/.*)								{ ; }
+(\/\*.*\*\/)							{ ; }
 [+|-]?[0-9]+							{	
 											censorInt(yytext);
 											printf("<INTEGER>\t\t%s\n", yytext); 
@@ -22,7 +23,11 @@ int yynumber = 0;
 
 [+|-]?(([0-9]+)|([0-9]*\.[0-9]+)([eE][-+]?[0-9]+)?) { printf("<FLOAT>\t\t%s\n", yytext); }
 
+
 [+\-*/=]|(and)|(or)|(eq)|(gt)			{ censorOper(yytext); }
+
+\".*\"									{ printf("<STRING>\t\t%s\n", yytext); }
+
 
 [a-zA-z_][a-zA-Z0-9_]*					{
 											censorId(yytext);
@@ -36,6 +41,7 @@ int yynumber = 0;
 
 %%
 
+// 문자열, 주석 개행 처리하기
 int main(void)
 {
 	yyparse();
