@@ -4,14 +4,19 @@
 #include <string.h>
 #include <stdbool.h>
 #include "project.tab.h"
+bool idValid(char);
 void censorId(char*);
+void censorInt(char*);
 int yynumber = 0;
 %}
 
 %%
 
 [ \t\n]+								{ ; }
-[+|-]?[0-9]+							{ printf("<INTEGER>\t\t%s\n", yytext); } 
+[+|-]?[0-9]+							{	
+											censorInt(yytext);
+											printf("<INTEGER>\t\t%s\n", yytext); 
+										} 
 [+|-]?(([0-9]+)|([0-9]*\.[0-9]+)([eE][-+]?[0-9]+)?) { printf("<FLOAT>\t\t%s\n", yytext); }
 [a-zA-Z0-9_]+							{
 											censorId(yytext);
@@ -39,7 +44,7 @@ int yyerror(void)
 		    exit(1);
 }
 
-bool isValid(char c) {
+bool idValid(char c) {
 	if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_')
 		return true;
 	else
@@ -55,7 +60,7 @@ void censorId(char* text) {
 	int _cnt = 0;
 
 	/* 첫 글자 기준으로 valid여부 검사 */
-	if(!isValid(text[0]))	yyerror();	
+	if(!idValid(text[0]))	yyerror();	
 
 	/* 위 조건검사 통과시 _로만 이루어진 identifier를 거른다 */
 	else {
@@ -65,6 +70,9 @@ void censorId(char* text) {
 	}
 }
 // 소수에도 위와같은 조건검사가 필요한지 짚어보기.
-
+void censorInt(char* text) {
+	/* 길이가 10 이상일 때는 나머지 cut */
+	if(strlen(text) > 10) text[10] = '\0';
+}
 
 

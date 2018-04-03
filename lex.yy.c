@@ -463,9 +463,11 @@ char *yytext;
 #include <string.h>
 #include <stdbool.h>
 #include "project.tab.h"
+bool idValid(char);
 void censorId(char*);
+void censorInt(char*);
 int yynumber = 0;
-#line 469 "lex.yy.c"
+#line 471 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -683,10 +685,10 @@ YY_DECL
 		}
 
 	{
-#line 11 "project.l"
+#line 13 "project.l"
 
 
-#line 690 "lex.yy.c"
+#line 692 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -746,22 +748,25 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 13 "project.l"
+#line 15 "project.l"
 { ; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 14 "project.l"
-{ printf("<INTEGER>\t\t%s\n", yytext); } 
+#line 16 "project.l"
+{	
+											censorInt(yytext);
+											printf("<INTEGER>\t\t%s\n", yytext); 
+										} 
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 15 "project.l"
+#line 20 "project.l"
 { printf("<FLOAT>\t\t%s\n", yytext); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 16 "project.l"
+#line 21 "project.l"
 {
 											censorId(yytext);
 		                     				//_만 있으면 무시
@@ -770,15 +775,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 21 "project.l"
+#line 26 "project.l"
 { yyerror(); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 23 "project.l"
+#line 28 "project.l"
 ECHO;
 	YY_BREAK
-#line 782 "lex.yy.c"
+#line 787 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1779,7 +1784,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 23 "project.l"
+#line 28 "project.l"
 
 
 
@@ -1800,7 +1805,7 @@ int yyerror(void)
 		    exit(1);
 }
 
-bool isValid(char c) {
+bool idValid(char c) {
 	if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_')
 		return true;
 	else
@@ -1816,7 +1821,7 @@ void censorId(char* text) {
 	int _cnt = 0;
 
 	/* 첫 글자 기준으로 valid여부 검사 */
-	if(!isValid(text[0]))	yyerror();	
+	if(!idValid(text[0]))	yyerror();	
 
 	/* 위 조건검사 통과시 _로만 이루어진 identifier를 거른다 */
 	else {
@@ -1826,7 +1831,10 @@ void censorId(char* text) {
 	}
 }
 // 소수에도 위와같은 조건검사가 필요한지 짚어보기.
-
+void censorInt(char* text) {
+	/* 길이가 10 이상일 때는 나머지 cut */
+	if(strlen(text) > 10) text[10] = '\0';
+}
 
 
 
