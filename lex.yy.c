@@ -484,14 +484,20 @@ char *yytext;
 #include <string.h>
 #include <stdbool.h>
 #include "project.tab.h"
+#define MAX_DBNUM	1000
+#define STR_LENG	20
 int yyerror(void);
 void censorId(char*);
 void censorInt(char*);
 void censorSpec(char*);
 void censorOper(char*);
 void toUpper(char*);
-int yynumber = 0;
-#line 495 "lex.yy.c"
+
+char id_table[MAX_DBNUM][STR_LENG];
+char str_table[MAX_DBNUM][STR_LENG];
+int id_ptr = 0;
+int str_ptr = 0;
+#line 501 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -709,10 +715,10 @@ YY_DECL
 		}
 
 	{
-#line 15 "project.l"
+#line 21 "project.l"
 
 
-#line 716 "lex.yy.c"
+#line 722 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -772,22 +778,22 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 17 "project.l"
+#line 23 "project.l"
 { ; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 18 "project.l"
+#line 24 "project.l"
 { ; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 19 "project.l"
+#line 25 "project.l"
 { ; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 21 "project.l"
+#line 27 "project.l"
 {	
 											censorInt(yytext);
 											printf("<INTEGER>\t\t%s\n", yytext); 
@@ -795,40 +801,40 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 26 "project.l"
+#line 32 "project.l"
 { printf("<FLOAT>\t\t%s\n", yytext); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 29 "project.l"
+#line 35 "project.l"
 { censorOper(yytext); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 31 "project.l"
+#line 37 "project.l"
 { printf("<STRING>\t\t%s\n", yytext); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 34 "project.l"
+#line 40 "project.l"
 { censorId(yytext); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 37 "project.l"
+#line 43 "project.l"
 { censorSpec(yytext); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 39 "project.l"
+#line 45 "project.l"
 { yyerror(); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 41 "project.l"
+#line 47 "project.l"
 ECHO;
 	YY_BREAK
-#line 832 "lex.yy.c"
+#line 838 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1829,7 +1835,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 41 "project.l"
+#line 47 "project.l"
 
 
 
@@ -1862,12 +1868,14 @@ void censorId(char* text) {
 					"else", "eq", "gt", "if", "or", 
 					"print", "return", "while", "identifier"};
 	bool isKeyword = false;
+	int idx = 0;
 
 	/* 길이가 16 이상일 때는 우선적으로 길이 16으로 맞춰준다. */
 	if(strlen(text) > 16) text[16] = '\0';
 
 	/* 길이를 재정의 */
 	int length = strlen(text);
+	int idAppear = false;
 	int _cnt = 0;
 
 	/* _로만 이루어진 identifier를 거른다 */
@@ -1885,14 +1893,29 @@ void censorId(char* text) {
 
 	/* 키워드와 같으면 출력하고 즉시 리턴 */
 	if(isKeyword) {
-		char tmp[20];
+		char tmp[STR_LENG];
 		strcpy(tmp, text);
 		toUpper(tmp);
 		printf("<%s>\t\t%s\n", tmp, text);
 		return;
 	}
 
-	printf("<ID, %d>\t\t%s\n", yynumber, yytext);
+	/* 인덱싱 */
+	for(int i = 0 ; i < MAX_DBNUM ; i++) {
+		if(!(strcmp(text, id_table[i]))) {
+			printf("in\n");
+			idAppear = true;
+			idx = i;
+			break;
+		}
+	}
+
+	if(!idAppear){
+		strcpy(id_table[++id_ptr], text);
+		printf("<ID, %d>\t\t%s\n", id_ptr, text);
+	} else {
+		printf("<ID, %d>\t\t%s\n", idx, text);
+	}
 
 }
 
@@ -1918,6 +1941,7 @@ void censorOper(char* text) {
 		else if(text[0] == '*')	printf("<MUSTI>\t\t%s\n", text);
 		else					printf("<DIVIS>\t\t%s\n", text);
 	} else {
+		/* and, or, eq, gt는 keyword인가 operator인가? */
 		if(!(strcmp(text, "and")))		printf("<AND>\t\t%s\n", text);
 		else if(!(strcmp(text, "or")))	printf("<OR>\t\t%s\n", text);
 		else if(!(strcmp(text, "eq")))	printf("<EQ>\t\t%s\n", text);

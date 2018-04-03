@@ -3,14 +3,19 @@
 #include <string.h>
 #include <stdbool.h>
 #include "project.tab.h"
+#define MAX_DBNUM	1000
+#define STR_LENG	20
 int yyerror(void);
 void censorId(char*);
 void censorInt(char*);
 void censorSpec(char*);
 void censorOper(char*);
 void toUpper(char*);
-int idnum = 0;
-int strnum = 0;
+
+char id_table[MAX_DBNUM][STR_LENG];
+char str_table[MAX_DBNUM][STR_LENG];
+int id_ptr = 0;
+int str_ptr = 0;
 %}
 
 %%
@@ -70,12 +75,14 @@ void censorId(char* text) {
 					"else", "eq", "gt", "if", "or", 
 					"print", "return", "while", "identifier"};
 	bool isKeyword = false;
+	int idx = 0;
 
 	/* 길이가 16 이상일 때는 우선적으로 길이 16으로 맞춰준다. */
 	if(strlen(text) > 16) text[16] = '\0';
 
 	/* 길이를 재정의 */
 	int length = strlen(text);
+	int idAppear = false;
 	int _cnt = 0;
 
 	/* _로만 이루어진 identifier를 거른다 */
@@ -93,14 +100,29 @@ void censorId(char* text) {
 
 	/* 키워드와 같으면 출력하고 즉시 리턴 */
 	if(isKeyword) {
-		char tmp[20];
+		char tmp[STR_LENG];
 		strcpy(tmp, text);
 		toUpper(tmp);
 		printf("<%s>\t\t%s\n", tmp, text);
 		return;
 	}
 
-	printf("<ID, %d>\t\t%s\n", yynumber, yytext);
+	/* 인덱싱 */
+	for(int i = 0 ; i < MAX_DBNUM ; i++) {
+		if(!(strcmp(text, id_table[i]))) {
+			printf("in\n");
+			idAppear = true;
+			idx = i;
+			break;
+		}
+	}
+
+	if(!idAppear){
+		strcpy(id_table[++id_ptr], text);
+		printf("<ID, %d>\t\t%s\n", id_ptr, text);
+	} else {
+		printf("<ID, %d>\t\t%s\n", idx, text);
+	}
 
 }
 
@@ -126,6 +148,7 @@ void censorOper(char* text) {
 		else if(text[0] == '*')	printf("<MUSTI>\t\t%s\n", text);
 		else					printf("<DIVIS>\t\t%s\n", text);
 	} else {
+		/* and, or, eq, gt는 keyword인가 operator인가? */
 		if(!(strcmp(text, "and")))		printf("<AND>\t\t%s\n", text);
 		else if(!(strcmp(text, "or")))	printf("<OR>\t\t%s\n", text);
 		else if(!(strcmp(text, "eq")))	printf("<EQ>\t\t%s\n", text);
