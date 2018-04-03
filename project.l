@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "hello.tab.h"
+#include "project.tab.h"
 int yynumber = 0;
 %}
 
@@ -43,8 +43,4 @@ int yyerror(void)
 	    printf("Error\n");
 		    exit(1);
 }
-}
-}
-}
-	}
-}
+
