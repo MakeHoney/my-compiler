@@ -48,9 +48,12 @@ bool isValid(char c) {
 
 void censorId(char* text) {
 	int length = strlen(text);
+	int _cnt = 0;
 	if(!isValid(text[0]))	yyerror();	
 	else {
-//		if(strlen(text) == 
+		for(int i = 0 ; i < length ; i++)
+			if(text[i] == '_') _cnt++;
+		if(strlen(text) == _cnt) yyerror();
 	}
 }
 // 소수에도 위와같은 조건검사가 필요한지 짚어보기.
