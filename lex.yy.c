@@ -360,8 +360,8 @@ static void yynoreturn yy_fatal_error (yyconst char* msg  );
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 7
-#define YY_END_OF_BUFFER 8
+#define YY_NUM_RULES 8
+#define YY_END_OF_BUFFER 9
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -369,10 +369,11 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static yyconst flex_int16_t yy_accept[21] =
+static yyconst flex_int16_t yy_accept[29] =
     {   0,
-        0,    0,    8,    6,    2,    2,    1,    6,    6,    3,
-        4,    2,    0,    3,    5,    4,    0,    0,    5,    0
+        0,    0,    9,    7,    1,    1,    6,    4,    4,    7,
+        2,    5,    5,    5,    5,    5,    7,    1,    0,    2,
+        3,    5,    5,    4,    0,    0,    3,    0
     } ;
 
 static yyconst YY_CHAR yy_ec[256] =
@@ -380,17 +381,17 @@ static yyconst YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    2,    1,    4,    1,    1,    1,    1,    1,    1,
-        1,    1,    5,    1,    5,    6,    1,    7,    7,    7,
-        7,    7,    7,    7,    7,    7,    7,    1,    1,    1,
-        1,    1,    1,    1,    8,    8,    8,    8,    9,    8,
-        8,    8,    8,    8,    8,    8,    8,    8,    8,    8,
-        8,    8,    8,    8,    8,    8,    8,    8,    8,    8,
-       10,   10,   10,   10,    8,   10,    8,    8,    8,    8,
+        1,    2,    1,    4,    1,    1,    1,    1,    1,    4,
+        4,    5,    6,    4,    6,    7,    5,    8,    8,    8,
+        8,    8,    8,    8,    8,    8,    8,    1,    4,    1,
+        5,    1,    1,    1,    9,    9,    9,    9,   10,    9,
+        9,    9,    9,    9,    9,    9,    9,    9,    9,    9,
+        9,    9,    9,    9,    9,    9,    9,    9,    9,    9,
+       11,   11,   11,   11,    9,   11,   12,    9,    9,   13,
 
-        9,    8,    8,    8,    8,    8,    8,    8,    8,    8,
-        8,    8,    8,    8,    8,    8,    8,    8,    8,    8,
-        8,    8,    1,   11,    1,    1,    1,    1,    1,    1,
+       14,    9,   15,    9,    9,    9,    9,    9,    9,   16,
+       17,    9,   18,   19,    9,   20,    9,    9,    9,    9,
+        9,    9,    1,   21,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -407,40 +408,49 @@ static yyconst YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static yyconst YY_CHAR yy_meta[12] =
+static yyconst YY_CHAR yy_meta[22] =
     {   0,
-        1,    2,    2,    1,    1,    1,    3,    3,    3,    1,
+        1,    1,    1,    1,    1,    1,    1,    2,    2,    2,
+        1,    2,    2,    2,    2,    2,    2,    2,    2,    2,
         1
     } ;
 
-static yyconst flex_uint16_t yy_base[23] =
+static yyconst flex_uint16_t yy_base[30] =
     {   0,
-        0,    0,   24,   25,    0,    0,   25,    6,   16,    0,
-        0,    0,   15,    0,    7,    0,   12,   14,   13,   25,
-       16,   12
+        0,    0,   51,   52,   20,   22,   52,   52,   19,   42,
+       21,    0,   33,   30,   27,   27,   23,   30,   37,   27,
+       28,    0,   31,    0,   31,   35,   33,   52,   38
     } ;
 
-static yyconst flex_int16_t yy_def[23] =
+static yyconst flex_int16_t yy_def[30] =
     {   0,
-       20,    1,   20,   20,   21,   21,   20,   20,   20,    8,
-       22,   21,   20,    8,   20,   22,   20,   20,   20,    0,
-       20,   20
+       28,    1,   28,   28,   28,   28,   28,   28,   28,   28,
+       28,   29,   29,   29,   29,   29,   28,   28,   28,   28,
+       28,   29,   29,   29,   28,   28,   28,    0,   28
     } ;
 
-static yyconst flex_uint16_t yy_nxt[37] =
+static yyconst flex_uint16_t yy_nxt[74] =
     {   0,
-        4,    5,    6,    7,    8,    9,   10,   11,   11,   11,
-        8,   13,   14,   15,   16,   17,   18,   12,   19,   19,
-       19,   15,   15,   20,    3,   20,   20,   20,   20,   20,
-       20,   20,   20,   20,   20,   20
+        4,    5,    6,    7,    8,    9,   10,   11,   12,   12,
+       12,   13,   12,   14,   15,   12,   16,   12,   12,   12,
+       17,   18,   18,   18,   18,   19,   20,   19,   20,   19,
+       20,   18,   18,   19,   20,   21,   26,   25,   27,   22,
+       27,   25,   27,   24,   21,   24,   24,   24,   23,   21,
+       28,    3,   28,   28,   28,   28,   28,   28,   28,   28,
+       28,   28,   28,   28,   28,   28,   28,   28,   28,   28,
+       28,   28,   28
     } ;
 
-static yyconst flex_int16_t yy_chk[37] =
+static yyconst flex_int16_t yy_chk[74] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    8,    8,   15,   22,   15,   17,   21,   17,   19,
-       18,   13,    9,    3,   20,   20,   20,   20,   20,   20,
-       20,   20,   20,   20,   20,   20
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    5,    5,    6,    6,    9,    9,   11,   11,   17,
+       17,   18,   18,   20,   20,   21,   25,   21,   25,   29,
+       27,   21,   26,   23,   19,   16,   15,   14,   13,   10,
+        3,   28,   28,   28,   28,   28,   28,   28,   28,   28,
+       28,   28,   28,   28,   28,   28,   28,   28,   28,   28,
+       28,   28,   28
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -466,8 +476,10 @@ char *yytext;
 int yyerror(void);
 void censorId(char*);
 void censorInt(char*);
+void censorSpec(char*);
+void censorOper(char*);
 int yynumber = 0;
-#line 471 "lex.yy.c"
+#line 483 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -685,9 +697,10 @@ YY_DECL
 		}
 
 	{
-#line 12 "project.l"
+#line 14 "project.l"
 
-#line 691 "lex.yy.c"
+
+#line 704 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -714,13 +727,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 21 )
+				if ( yy_current_state >= 29 )
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (flex_int16_t) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 25 );
+		while ( yy_base[yy_current_state] != 52 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -745,49 +758,53 @@ do_action:	/* This label is used only to access EOF actions. */
 			goto yy_find_action;
 
 case 1:
-YY_RULE_SETUP
-#line 13 "project.l"
-
-	YY_BREAK
-case 2:
-/* rule 2 can match eol */
-YY_RULE_SETUP
-#line 14 "project.l"
-{ ; }
-	YY_BREAK
-case 3:
+/* rule 1 can match eol */
 YY_RULE_SETUP
 #line 16 "project.l"
+{ ; }
+	YY_BREAK
+case 2:
+YY_RULE_SETUP
+#line 18 "project.l"
 {	
 											censorInt(yytext);
 											printf("<INTEGER>\t\t%s\n", yytext); 
-										} 
+										}
+	YY_BREAK
+case 3:
+YY_RULE_SETUP
+#line 23 "project.l"
+{ printf("<FLOAT>\t\t%s\n", yytext); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 20 "project.l"
-{
-											censorId(yytext);
-		                     				//_만 있으면 무시
-											printf("<ID, %d>\t\t%s\n", yynumber, yytext);          
-							            }
+#line 25 "project.l"
+{ censorOper(yytext); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 25 "project.l"
-{ printf("<FLOAT>\t\t%s\n", yytext); }
+#line 27 "project.l"
+{
+											censorId(yytext);
+											printf("<ID, %d>\t\t%s\n", yynumber, yytext);          
+							            }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 27 "project.l"
-{ yyerror(); }
+#line 33 "project.l"
+{ censorSpec(yytext); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 29 "project.l"
+#line 35 "project.l"
+{ yyerror(); }
+	YY_BREAK
+case 8:
+YY_RULE_SETUP
+#line 37 "project.l"
 ECHO;
 	YY_BREAK
-#line 791 "lex.yy.c"
+#line 808 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1080,7 +1097,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 21 )
+			if ( yy_current_state >= 29 )
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (flex_int16_t) yy_c];
@@ -1108,11 +1125,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 21 )
+		if ( yy_current_state >= 29 )
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (flex_int16_t) yy_c];
-	yy_is_jam = (yy_current_state == 20);
+	yy_is_jam = (yy_current_state == 28);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1788,7 +1805,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 29 "project.l"
+#line 37 "project.l"
 
 
 
@@ -1808,8 +1825,8 @@ int yyerror(void)
 	    printf("Error\n");
 		    exit(1);
 }
+
 void censorId(char* text) {
-	printf("in censorId\n");
 	/* 길이가 16 이상일 때는 우선적으로 길이 16으로 맞춰준다. */
 	if(strlen(text) > 16) text[16] = '\0';
 
@@ -1823,10 +1840,34 @@ void censorId(char* text) {
 		if(text[i] == '_') _cnt++;
 	if(length == _cnt) yyerror();
 }
-// 소수에도 위와같은 조건검사가 필요한지 짚어보기.
+
 void censorInt(char* text) {
 	/* 길이가 10 이상일 때는 나머지 cut */
 	if(strlen(text) > 10) text[10] = '\0';
 }
 
+void censorSpec(char* text) {
+	/* 개인적인 사용 빈도 수에 따라 상위에 배치 */
+	if(text[0] == ';')			printf("<SEMICOLON>\t\t%s\n", text);
+	else if(text[0] == '(')		printf("<LPAREN>\t\t%s\n", text);
+	else if(text[0] == ')')		printf("<RPAREN>\t\t%s\n", text);
+	else if(text[0] == '"')		printf("<DQUOTE>\t\t%s\n", text);
+	else 						printf("<COMMA>\t\t%s\n", text);
+}
+
+void censorOper(char* text) {
+	int length = strlen(text);
+	if(length == 1) {
+		if(text[0] == '=') 		printf("<ASSIGN>\t\t%s\n", text);
+		else if(text[0] == '+')	printf("<PLUS>\t\t%s\n", text);
+		else if(text[0] == '-') printf("<MINUS>\t\t%s\n", text);
+		else if(text[0] == '*')	printf("<MUSTI>\t\t%s\n", text);
+		else					printf("<DIVIS>\t\t%s\n", text);
+	} else {
+		if(!(strcmp(text, "and")))		printf("<AND>\t\t%s\n", text);
+		else if(!(strcmp(text, "or")))	printf("<OR>\t\t%s\n", text);
+		else if(!(strcmp(text, "eq")))	printf("<EQ>\t\t%s\n", text);
+		else							printf("<GT>\t\t%s\n", text);
+	}
+}
 
