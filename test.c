@@ -1,7 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main() {
-	double a__a = +12.3;
-	char a = '\'';
-	printf("%c\n", a);
+
+	   char* keyword[] = {"and", "begin", "def", "end",
+		                       "else", "eq", "gt", "if", "or",
+		                        "print", "return", "while", "identifier"};
+
+printf("%d",	   strlen(keyword));
 }

@@ -8,7 +8,9 @@ void censorId(char*);
 void censorInt(char*);
 void censorSpec(char*);
 void censorOper(char*);
-int yynumber = 0;
+void toUpper(char*);
+int idnum = 0;
+int strnum = 0;
 %}
 
 %%
@@ -16,6 +18,7 @@ int yynumber = 0;
 [ \t\n]+								{ ; }
 (\/\/.*)								{ ; }
 (\/\*.*\*\/)							{ ; }
+
 [+|-]?[0-9]+							{	
 											censorInt(yytext);
 											printf("<INTEGER>\t\t%s\n", yytext); 
@@ -29,10 +32,7 @@ int yynumber = 0;
 \".*\"									{ printf("<STRING>\t\t%s\n", yytext); }
 
 
-[a-zA-z_][a-zA-Z0-9_]*					{
-											censorId(yytext);
-											printf("<ID, %d>\t\t%s\n", yynumber, yytext);          
-							            }
+[a-zA-z_][a-zA-Z0-9_]*					{ censorId(yytext); }
 
 
 [",();]									{ censorSpec(yytext); }
@@ -59,7 +59,18 @@ int yyerror(void)
 		    exit(1);
 }
 
-void censorId(char* text) {
+void toUpper(char* text) {
+	for(int i = 0 ; i < strlen(text) ; i++)
+		if(text[i] >= 'a' && text[i] <= 'z')
+			text[i] -= 32;
+}
+
+void censorId(char* text) { 
+	char* keyword[] = {"and", "begin", "def", "end", 
+					"else", "eq", "gt", "if", "or", 
+					"print", "return", "while", "identifier"};
+	bool isKeyword = false;
+
 	/* 길이가 16 이상일 때는 우선적으로 길이 16으로 맞춰준다. */
 	if(strlen(text) > 16) text[16] = '\0';
 
@@ -68,10 +79,29 @@ void censorId(char* text) {
 	int _cnt = 0;
 
 	/* _로만 이루어진 identifier를 거른다 */
-
 	for(int i = 0 ; i < length ; i++)
 		if(text[i] == '_') _cnt++;
 	if(length == _cnt) yyerror();
+
+	/* 키워드 검사 */
+	for(int i = 0 ; i < 13 ; i++) {
+		if(!strcmp(text, keyword[i])){
+			isKeyword = true;
+			break;
+		}
+	}
+
+	/* 키워드와 같으면 출력하고 즉시 리턴 */
+	if(isKeyword) {
+		char tmp[20];
+		strcpy(tmp, text);
+		toUpper(tmp);
+		printf("<%s>\t\t%s\n", tmp, text);
+		return;
+	}
+
+	printf("<ID, %d>\t\t%s\n", yynumber, yytext);
+
 }
 
 void censorInt(char* text) {
@@ -89,8 +119,7 @@ void censorSpec(char* text) {
 }
 
 void censorOper(char* text) {
-	int length = strlen(text);
-	if(length == 1) {
+	if(strlen(text) == 1) {
 		if(text[0] == '=') 		printf("<ASSIGN>\t\t%s\n", text);
 		else if(text[0] == '+')	printf("<PLUS>\t\t%s\n", text);
 		else if(text[0] == '-') printf("<MINUS>\t\t%s\n", text);
