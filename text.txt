@@ -1,6 +1,5 @@
-begin
+begin 
 a = "hello" ;
 b = "bye" ;
 print max( a , b )
-end
-table
+end        

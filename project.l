@@ -26,7 +26,6 @@ int str_ptr = 0;
 [ \t\n]+								{ ; }
 (\/\/.*)								{ ; }
 (\/\*.*\*\/)							{ ; }
-(table)									{ printTable(); }
 [+|-]?[0-9]+							{	
 											censorInt(yytext);
 											printf("<INTEGER>\t%s\n", yytext);
@@ -46,6 +45,8 @@ int str_ptr = 0;
 
 .                     					{ yyerror(); }
 
+<<EOF>>									{ printTable(); exit(0); }
+
 %%
 
 // 문자열, 주석 개행 처리하기
@@ -64,13 +65,13 @@ int main(int argc, char* argv[])
 
 int yywrap(void)
 {
-	   return 0;
+	return 1;
 }
 
 int yyerror(void)
 {
-	    printf("Error\n");
-		    exit(1);
+    printf("Error\n");
+    exit(1);
 }
 
 void printTable() {
