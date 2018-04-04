@@ -29,11 +29,10 @@ int str_ptr = 0;
 (table)									{ printTable(); }
 [+|-]?[0-9]+							{	
 											censorInt(yytext);
-											printf("<INTEGER>\t%s\n", yytext); 
+											printf("<INTEGER>\t%s\n", yytext);
 										}
 
 [+|-]?(([0-9]+)|([0-9]*\.[0-9]+)([eE][-+]?[0-9]+)?) { printf("<FLOAT>\t\t%s\n", yytext); }
-
 
 [+\-*/=]|(and)|(or)|(eq)|(gt)			{ censorOper(yytext); }
 
@@ -52,10 +51,14 @@ int str_ptr = 0;
 // 문자열, 주석 개행 처리하기
 int main(int argc, char* argv[])
 {
+	/*
 	FILE* fp = fopen(argv[1], "r");
 	yyin = fp;
+	*/
 	yyparse();
+	/*
 	fclose(fp);
+	*/
     return 0;
 }
 
