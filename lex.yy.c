@@ -1847,14 +1847,7 @@ void yyfree (void * ptr )
 // 문자열, 주석 개행 처리하기
 int main(int argc, char* argv[])
 {
-	/*
-	FILE* fp = fopen(argv[1], "r");
-	yyin = fp;
-	*/
 	yyparse();
-	/*
-	fclose(fp);
-	*/
     return 0;
 }
 
@@ -1908,11 +1901,8 @@ void censorId(char* text) {
 			break;
 		}
 	}
-	/*
-	for(int i = 0 ; i < length ; i++)
-		if(text[i] == '_') _cnt++;
-		*/
 	if(isAll_) yyerror();
+
 	/* 키워드 검사 */
 	for(int i = 0 ; i < 13 ; i++) {
 		if(!strcmp(text, keyword[i])){
@@ -1988,7 +1978,7 @@ void censorOper(char* text) {
 		if(text[0] == '=') 		printf("<ASSIGN>\t\t%s\n", text);
 		else if(text[0] == '+')	printf("<PLUS>\t\t%s\n", text);
 		else if(text[0] == '-') printf("<MINUS>\t\t%s\n", text);
-		else if(text[0] == '*')	printf("<MUSTI>\t\t%s\n", text);
+		else if(text[0] == '*')	printf("<MULTI>\t\t%s\n", text);
 		else					printf("<DIVIS>\t\t%s\n", text);
 	} else {
 		/* and, or, eq, gt는 keyword인가 operator인가? */

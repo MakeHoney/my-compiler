@@ -52,14 +52,7 @@ int str_ptr = 0;
 // 문자열, 주석 개행 처리하기
 int main(int argc, char* argv[])
 {
-	/*
-	FILE* fp = fopen(argv[1], "r");
-	yyin = fp;
-	*/
 	yyparse();
-	/*
-	fclose(fp);
-	*/
     return 0;
 }
 
