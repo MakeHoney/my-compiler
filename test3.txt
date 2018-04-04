@@ -16,7 +16,7 @@ if(45 et a)
 	print("victory");
 else if(a / b)
 	return 0;
-else if(a % 2 == 3)
+else if(___ == 3)
 	return 1;
 else
 	return 2;
