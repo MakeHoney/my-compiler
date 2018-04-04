@@ -1,0 +1,23 @@
+while() (
+
+		a = a-3.123;
+		b = a+44232;
+		c = (a+b)*(45-c);
+		)
+
+/* char* a = (char*)malloc(sizeof(char)*50); */
+
+begin 
+		print ("asdf");
+		print (return;);
+end
+
+if(45 et a)
+	print("victory");
+else if(a / b)
+	return 0;
+else if(a % 2 == 3)
+	return 1;
+else
+	return 2;
+

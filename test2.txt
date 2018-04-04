@@ -1,0 +1,18 @@
+if(a and b)
+	print "string";
+else if(a or b)
+	print " string2";
+else
+	a = 3.0e-5;
+	c = a + 1;
+begin
+	print c eq a;
+	",
+end
+identifiers
+	/* ("asdfi")eeke */
+	d = c * b;
+	e = "qoek";
+	// end
+	d = a / 2;
+end

@@ -87,7 +87,7 @@ void toUpper(char* text) {
 void censorId(char* text) { 
 	char* keyword[] = {"and", "begin", "def", "end", 
 					"else", "eq", "gt", "if", "or", 
-					"print", "return", "while", "identifier"};
+					"print", "return", "while", "identifiers"};
 	bool isKeyword = false;
 	bool idAppear = false;
 	int idx = 0;
