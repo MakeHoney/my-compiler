@@ -1899,13 +1899,20 @@ void censorId(char* text) {
 
 	/* 길이를 재정의 */
 	int length = strlen(text);
-	int _cnt = 0;
+	int isAll_ = true;
 
 	/* _로만 이루어진 identifier를 거른다 */
+	for(int i = 0 ; i < length ; i++){
+		if(text[i] != '_')	{
+			isAll_ = false;
+			break;
+		}
+	}
+	/*
 	for(int i = 0 ; i < length ; i++)
 		if(text[i] == '_') _cnt++;
-	if(length == _cnt) yyerror();
-
+		*/
+	if(isAll_) yyerror();
 	/* 키워드 검사 */
 	for(int i = 0 ; i < 13 ; i++) {
 		if(!strcmp(text, keyword[i])){

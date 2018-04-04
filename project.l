@@ -104,12 +104,16 @@ void censorId(char* text) {
 
 	/* 길이를 재정의 */
 	int length = strlen(text);
-	int _cnt = 0;
+	int isAll_ = true;
 
 	/* _로만 이루어진 identifier를 거른다 */
-	for(int i = 0 ; i < length ; i++)
-		if(text[i] == '_') _cnt++;
-	if(length == _cnt) yyerror();
+	for(int i = 0 ; i < length ; i++){
+		if(text[i] != '_')	{
+			isAll_ = false;
+			break;
+		}
+	}
+	if(isAll_) yyerror();
 
 	/* 키워드 검사 */
 	for(int i = 0 ; i < 13 ; i++) {
@@ -186,7 +190,7 @@ void censorOper(char* text) {
 		if(text[0] == '=') 		printf("<ASSIGN>\t\t%s\n", text);
 		else if(text[0] == '+')	printf("<PLUS>\t\t%s\n", text);
 		else if(text[0] == '-') printf("<MINUS>\t\t%s\n", text);
-		else if(text[0] == '*')	printf("<MUSTI>\t\t%s\n", text);
+		else if(text[0] == '*')	printf("<MULTI>\t\t%s\n", text);
 		else					printf("<DIVIS>\t\t%s\n", text);
 	} else {
 		/* and, or, eq, gt는 keyword인가 operator인가? */
