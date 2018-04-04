@@ -13,6 +13,7 @@ void censorInt(char*);
 void censorSpec(char*);
 void censorOper(char*);
 void toUpper(char*);
+void printTable();
 
 char id_table[MAX_DBNUM][STR_LENG];
 char str_table[MAX_DBNUM][STR_LENG];
@@ -25,10 +26,10 @@ int str_ptr = 0;
 [ \t\n]+								{ ; }
 (\/\/.*)								{ ; }
 (\/\*.*\*\/)							{ ; }
-
+(table)									{ printTable(); }
 [+|-]?[0-9]+							{	
 											censorInt(yytext);
-											printf("<INTEGER>\t\t%s\n", yytext); 
+											printf("<INTEGER>\t%s\n", yytext); 
 										}
 
 [+|-]?(([0-9]+)|([0-9]*\.[0-9]+)([eE][-+]?[0-9]+)?) { printf("<FLOAT>\t\t%s\n", yytext); }
@@ -51,8 +52,10 @@ int str_ptr = 0;
 // 문자열, 주석 개행 처리하기
 int main(int argc, char* argv[])
 {
-	yyin = fopen(argv[1], "r");
+	FILE* fp = fopen(argv[1], "r");
+	yyin = fp;
 	yyparse();
+	fclose(fp);
     return 0;
 }
 
@@ -67,21 +70,16 @@ int yyerror(void)
 		    exit(1);
 }
 
-void printTable() {/*
-	if(id_ptr > 0){
-		printf("\n\n*****IDENTIFIER TABLE*****\nidx\t\t\tID\n");
-		for(int i = 1 ; i < id_ptr + 1 ; i++){
-			printf("%d\t\t\t%s\n", i, id_table[i]);
-		}
-	}
+void printTable() {
+	int bigNum = id_ptr > str_ptr ? id_ptr : str_ptr;
+	if(bigNum > 0) {
+		printf("\n\n***IDENTIFIER TABLE***\t\t\t\t\t******STRING TABLE******\n");
+		printf("idx\t\tID\t\t\t\t\tidx\t\tSTRING\n");
 
-	if(str_ptr > 0){		
-		printf("\n\n******STRING TABLE*****\nidx\t\t\tSTRING\n");
-		for(int i = 1 ; i < str_ptr + 1 ; i++) {
-			printf("%d\t\t\t%s\n", i, str_table[i]);
+		for(int i = 1 ; i < bigNum + 1 ; i++) {
+			printf("%d\t\t%s\t\t\t\t\t%d\t\t%s\n", i, id_table[i], i, str_table[i]);
 		}
 	}
-	*/
 }
 void toUpper(char* text) {
 	for(int i = 0 ; i < strlen(text) ; i++)
@@ -122,7 +120,6 @@ void censorId(char* text) {
 		char tmp[STR_LENG];
 		strcpy(tmp, text);
 		toUpper(tmp);
-		printTable();
 		printf("<%s>\t\t%s\n", tmp, text);
 		return;
 	}
@@ -138,10 +135,8 @@ void censorId(char* text) {
 
 	if(!idAppear){
 		strcpy(id_table[++id_ptr], text);
-		printTable();
 		printf("<ID, %d>\t\t%s\n", id_ptr, text);
 	} else {
-		printTable();
 		printf("<ID, %d>\t\t%s\n", idx, text);
 	}
 
