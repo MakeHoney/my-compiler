@@ -18,6 +18,7 @@ else if(a / b)
 	return 0;
 else if(___ == 3)
 	return 1;
+	
 else
 	return 2;
 

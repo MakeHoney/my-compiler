@@ -25,7 +25,7 @@ int str_ptr = 0;
 
 [ \t\n]+								{ ; }
 (\/\/.*)								{ ; }
-(\/\*.*\*\/)							{ ; }
+(\/\*(\n|.)*\*\/)							{ ; }
 [+|-]?[0-9]+							{	
 											censorInt(yytext);
 											printf("<INTEGER>\t%s\n", yytext);
@@ -38,7 +38,7 @@ int str_ptr = 0;
 \".*\"									{ censorStr(yytext); }
 
 
-[a-zA-z_][a-zA-Z0-9_]*					{ censorId(yytext); }
+[a-zA-Z_][a-zA-Z0-9_]*					{ censorId(yytext); }
 
 
 [",();]									{ censorSpec(yytext); }
@@ -88,7 +88,6 @@ void censorId(char* text) {
 	char* keyword[] = {"and", "begin", "def", "end", 
 					"else", "eq", "gt", "if", "or", 
 					"print", "return", "while", "identifiers"};
-	bool isKeyword = false;
 	bool idAppear = false;
 	int idx = 0;
 
@@ -99,6 +98,18 @@ void censorId(char* text) {
 	int length = strlen(text);
 	int isAll_ = true;
 
+
+	/* 키워드 검사 키워드와 같으면 출력이후 즉시 리턴 */
+	for(int i = 0 ; i < 13 ; i++) {
+		if(!strcmp(text, keyword[i])){
+			char tmp[STR_LENG];
+			strcpy(tmp, text);
+			toUpper(tmp);
+			printf("<%s>\t\t%s\n", tmp, text);
+			return;
+		}
+	}
+
 	/* _로만 이루어진 identifier를 거른다 */
 	for(int i = 0 ; i < length ; i++){
 		if(text[i] != '_')	{
@@ -108,24 +119,7 @@ void censorId(char* text) {
 	}
 	if(isAll_) yyerror();
 
-	/* 키워드 검사 */
-	for(int i = 0 ; i < 13 ; i++) {
-		if(!strcmp(text, keyword[i])){
-			isKeyword = true;
-			break;
-		}
-	}
-
-	/* 키워드와 같으면 출력하고 즉시 리턴 */
-	if(isKeyword) {
-		char tmp[STR_LENG];
-		strcpy(tmp, text);
-		toUpper(tmp);
-		printf("<%s>\t\t%s\n", tmp, text);
-		return;
-	}
-
-	/* 인덱싱 */
+	
 	for(int i = 0 ; i < MAX_DBNUM ; i++) {
 		if(!(strcmp(text, id_table[i]))) {
 			idAppear = true;
