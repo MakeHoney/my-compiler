@@ -49,6 +49,7 @@ int str_ptr = 0;
 
 %%
 
+// 테스트용 주석추가
 // 문자열, 주석 개행 처리하기
 int main(int argc, char* argv[])
 {
