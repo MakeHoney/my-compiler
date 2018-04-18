@@ -9,7 +9,7 @@
 int yyerror(void);
 void censorId(char*);
 void censorStr(char*);
-void censorInt(char*);
+void censorInt(char**);
 void censorSpec(char*);
 void censorOper(char*);
 void toUpper(char*);
@@ -27,7 +27,7 @@ int str_ptr = 0;
 (\/\/.*)								{ ; }
 (\/\*(\n|.)*\*\/)							{ ; }
 [+|-]?[0-9]+							{	
-											censorInt(yytext);
+											censorInt(&yytext);
 											printf("<INTEGER>\t%s\n", yytext);
 										}
 
@@ -159,9 +159,10 @@ void censorStr(char* text) {
 	}
 }
 
-void censorInt(char* text) {
+void censorInt(char** text) {
+	int length = strlen(*text);
 	/* 길이가 10 이상일 때는 나머지 cut */
-	if(strlen(text) > 10) text[10] = '\0';
+	if(length > 10) *text += length - 10;
 }
 
 void censorSpec(char* text) {
