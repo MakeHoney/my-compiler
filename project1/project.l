@@ -42,13 +42,12 @@
 int main(int argc, char* argv[])
 {
 	yyparse();
-	E();
     return 0;
 }
 
 int yywrap(void)
 {
-	E();
+	XML();
 	return 1;
 }
 

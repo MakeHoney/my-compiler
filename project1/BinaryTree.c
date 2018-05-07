@@ -4,6 +4,7 @@
 
 Node* MakeNode() {
 	Node* node = (Node*)malloc(sizeof(Node));
+	node->data = NULL;
 	node->left = NULL;
 	node->right = NULL;
 	return node;
@@ -37,4 +38,12 @@ void MakeRightSubTree(Node* parent, Node* child) {
 		free(parent->right);
 
 	parent->right = child;
+}
+
+void PreorderTraverse(Node* tree) {
+	if(tree == NULL) return;
+
+//	action(tree->data);
+	PreorderTraverse(tree->left);
+	PreorderTraverse(tree->right);
 }
