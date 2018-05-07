@@ -1,0 +1,12 @@
+def max ( a , b )
+if ( a gt b )
+return a
+else
+return b
+end
+end
+begin
+a = "hello" ;
+b = "bye" ;
+print max( a , b )
+end
