@@ -7,9 +7,6 @@
 extern char token_table[][STR_LENG];
 extern int tok_ptr;
 
-char* lookahead = NULL;
-int lookahead_ptr = 0;
-
 void E();
 void EP();
 void T();

@@ -3,6 +3,8 @@
 #include "Grammar.h"
 #include "BinaryTree.h"
 
+char* lookahead = NULL;
+int lookahead_ptr = 0;
 
 void match(char* str) {
 	if(!strcmp(lookahead, str) || !strcmp(lookahead, str))
@@ -12,11 +14,13 @@ void match(char* str) {
 }
 
 void E() {
+	fputs("E()\n", stdout);
 	T();
 	EP();
 }
 
 void EP() {
+	fputs("EP()\n", stdout);
 	lookahead = token_table[lookahead_ptr];
 	// 예외처리 필요?
 	if(!strcmp(lookahead, "plus") || !strcmp(lookahead, "minus")) {
@@ -29,11 +33,13 @@ void EP() {
 }
 
 void T() {
+	fputs("T()\n", stdout);
 	F();
 	TP();
 }
 
 void TP() {
+	fputs("TP()\n", stdout);
 	lookahead = token_table[lookahead_ptr];
 	if(!strcmp(lookahead, "mult")) {
 		match(lookahead);
@@ -44,6 +50,7 @@ void TP() {
 }
 
 void F() {
+	fputs("F()\n", stdout);
 	lookahead = token_table[lookahead_ptr];
 	if(!strcmp(lookahead, "(")) {
 		match(lookahead);

@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include "project.tab.h"
 #include "project.h"
+#include "Grammar.h"
 #include "BinaryTree.h"
 
 %}
@@ -41,11 +42,13 @@
 int main(int argc, char* argv[])
 {
 	yyparse();
+	E();
     return 0;
 }
 
 int yywrap(void)
 {
+	E();
 	return 1;
 }
 
@@ -119,12 +122,12 @@ void censorId(char* text) {
 
 	if(!idAppear){
 		strcpy(id_table[++id_ptr], text);
-		strcpy(token_table[tok_ptr], "ID");
+		strcpy(token_table[tok_ptr], "id");
 		printf("<ID, %d>\t\t%s\n", id_ptr, text);
 		for(int i = 0 ; i < tok_ptr + 1 ; i++)
 			printf("%s\n", token_table[i]);
 	} else {
-		strcpy(token_table[idx], "ID");
+		strcpy(token_table[idx], "id");
 		printf("<ID, %d>\t\t%s\n", idx, text);
 	}
 

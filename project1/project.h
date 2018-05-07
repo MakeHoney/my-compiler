@@ -19,6 +19,6 @@ char token_table[MAX_DBNUM][STR_LENG];
 
 int id_ptr = 0;
 int str_ptr = 0;
-int tok_ptr = 0;
+int tok_ptr = -1;
 
 #endif
