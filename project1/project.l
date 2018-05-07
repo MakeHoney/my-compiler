@@ -3,27 +3,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include "project.tab.h"
+#include "project.h"
 #include "BinaryTree.h"
-#define MAX_DBNUM	1000
-#define STR_LENG	20
-
-int yyerror(void);
-void censorId(char*);
-void censorStr(char*);
-void censorInt(char**);
-void censorSpec(char*);
-void censorOper(char*);
-void toUpper(char*);
-void printTable();
-
-char id_table[MAX_DBNUM][STR_LENG];
-char str_table[MAX_DBNUM][STR_LENG];
-int id_ptr = 0;
-int str_ptr = 0;
-
-char token_table[MAX_DBNUM][STR_LENG];
-int tok_ptr = 0;
-
 
 %}
 
@@ -178,21 +159,21 @@ void censorInt(char** text) {
 
 void censorSpec(char* text) {
 	/* 개인적인 사용 빈도 수에 따라 상위에 배치 */
-	if(text[0] == ';')			printf("<SEMICOLON>\t\t%s\n", text);
-	else if(text[0] == '(')		printf("<LPAREN>\t\t%s\n", text);
-	else if(text[0] == ')')		printf("<RPAREN>\t\t%s\n", text);
-	else if(text[0] == '"')		printf("<DQUOTE>\t\t%s\n", text);
-	else 						printf("<COMMA>\t\t%s\n", text);
+	if(text[0] == ';')			strcpy(token_table[tok_ptr], ";");
+	else if(text[0] == '(')		strcpy(token_table[tok_ptr], "(");
+	else if(text[0] == ')')		strcpy(token_table[tok_ptr], ")");
+	else if(text[0] == '"')		strcpy(token_table[tok_ptr], "\"");
+	else 						strcpy(token_table[tok_ptr], ",");
 }
 
 void censorOper(char* text) {
 	tok_ptr++;
 	if(strlen(text) == 1) {
-		if(text[0] == '=') 		strcpy(token_table[tok_ptr], "ASSIGN");
-		else if(text[0] == '+')	strcpy(token_table[tok_ptr], "PLUS");
-		else if(text[0] == '-') strcpy(token_table[tok_ptr], "MINUS");
-		else if(text[0] == '*')	strcpy(token_table[tok_ptr], "MULTI");
-		else					strcpy(token_table[tok_ptr], "DIVIS");
+		if(text[0] == '=') 		strcpy(token_table[tok_ptr], "assign");
+		else if(text[0] == '+')	strcpy(token_table[tok_ptr], "plus");
+		else if(text[0] == '-') strcpy(token_table[tok_ptr], "minus");
+		else if(text[0] == '*')	strcpy(token_table[tok_ptr], "mult");
+		else					strcpy(token_table[tok_ptr], "div");
 	} else {
 		/* and, or, eq, gt는 keyword인가 operator인가? */
 		if(!(strcmp(text, "and")))		printf("<AND>\t\t%s\n", text);

@@ -2,23 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "project.h"
 #include "project.tab.h"
-#define MAX_DBNUM	1000
-#define STR_LENG	20
 
-int yyerror(void);
-void censorId(char*);
-void censorStr(char*);
-void censorInt(char**);
-void censorSpec(char*);
-void censorOper(char*);
-void toUpper(char*);
-void printTable();
-
-char id_table[MAX_DBNUM][STR_LENG];
-char str_table[MAX_DBNUM][STR_LENG];
-int id_ptr = 0;
-int str_ptr = 0;
 %}
 
 %%
