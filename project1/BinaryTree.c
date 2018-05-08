@@ -40,10 +40,19 @@ void MakeRightSubTree(Node* parent, Node* child) {
 	parent->right = child;
 }
 
-void PreorderTraverse(Node* tree) {
+void PreorderTraverse(Node* tree, VisitFuncPtr action) {
 	if(tree == NULL) return;
 
-//	action(tree->data);
-	PreorderTraverse(tree->left);
-	PreorderTraverse(tree->right);
+	action(tree->data);
+	PreorderTraverse(tree->left, action);
+	PreorderTraverse(tree->right, action);
 }
+
+void PostorderTraverse(Node* tree, VisitFuncPtr action) {
+	if(tree == NULL) return;
+
+	PostorderTraverse(tree->left, action);
+	PostorderTraverse(tree->right, action);
+	action(tree->data);
+}
+

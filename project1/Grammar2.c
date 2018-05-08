@@ -9,16 +9,14 @@ int lookahead_ptr = 0;
 int cnt = 1;
 
 Node* rootNode = NULL;
-Node* temp = NULL;
 Node* nodeOperator = NULL;
 Node* nodeOperand = NULL;
 
 void ShowData(char* data) {
-//	if(!strcmp(data, "id"))
-		printf("%s\n", data);
-		//printf("<%s>%s</%s>", data, id_table[cnt++], data);
-//	else
-//		printf("<%s>", data);
+	if(!strcmp(data, "id"))
+		printf("<%s>%s</%s>", data, id_table[cnt++], data);
+	else
+		printf("<%s>", data);
 }
 
 void ShowData2(char* data) {
@@ -31,10 +29,10 @@ void XML() {
 	nodeOperator = MakeNode();
 	nodeOperand = MakeNode();
 	E();
-	puts("Traversal start!");
-	PreorderTraverse(rootNode, ShowData);
-//	PostorderTraverse(rootNode, ShowData2);
 	free(nodeOperator);
+	puts("Traversal start!");
+	PreorderTraverse(nodeOperand, ShowData);
+	PostorderTraverse(nodeOperand, ShowData2);
 	free(nodeOperand);
 }
 
@@ -65,13 +63,9 @@ void EP() {
 	// 예외처리 필요?
 	if(!strcmp(lookahead, "plus") || !strcmp(lookahead, "minus")) {
 		match(lookahead);
-		if(rootNode->data != NULL) temp = rootNode;
-		rootNode = MakeNode();
-		rootNode->data = lookahead;
-		if(temp != NULL) MakeLeftSubTree(rootNode, temp);
-		else MakeLeftSubTree(rootNode, nodeOperand);
-		//free(temp)?
-		nodeOperator = rootNode;
+		nodeOperator->data = lookahead;
+		MakeLeftSubTree(nodeOperator, nodeOperand);
+		nodeOperand = MakeNode();
 		T();
 		EP();
 	} else
@@ -89,12 +83,11 @@ void TP() {
 	lookahead = token_table[lookahead_ptr];
 	if(!strcmp(lookahead, "mult") || !strcmp(lookahead, "div")) {
 		match(lookahead);
-		nodeOperator = MakeNode();
 		nodeOperator->data = lookahead;
-		if(rootNode->data != NULL)
-			MakeRightSubTree(rootNode, nodeOperator);
 		MakeLeftSubTree(nodeOperator, nodeOperand);
-		printf("operand : %s\n", nodeOperand->data);
+//		MakeLeftSubTree(nodeOperator, rootNode);
+//		rootNode = nodeOperator;
+		nodeOperand = MakeNode();
 		F();
 		TP();
 	} else
@@ -104,7 +97,7 @@ void TP() {
 void F() {
 	fputs("F()\n", stdout);
 	lookahead = token_table[lookahead_ptr];
-	char* nextOperator = token_table[lookahead_ptr + 1];
+	nextOperator = token_table[lookahead_ptr + 1];
 	/* printf("nextoper : %p\n", token_table[lookahead_ptr + 50]; */
 	if(!strcmp(lookahead, "(")) {
 		match(lookahead);
@@ -114,13 +107,27 @@ void F() {
 	} else {
 		if(!strcmp(lookahead, "id")) {
 			match(lookahead);
-			nodeOperand = MakeNode(); // XML 함수에서 makenode가 필요한지 보기
 			nodeOperand->data = lookahead;
 			if(nodeOperator->data != NULL) {
-				/* nextOperator 없는 경우 예외처리 필요함 (EOF를 토큰배열에 추가) */
-				if(priority(nextOperator) <= priority(nodeOperator->data)) {
+				/* nextOperator 없는 경우 예외처리 필요함 */
+				if(priority(nextOperator) > priority(nodeOperator->data)) {
+					rootNode = nodeOperator;
+//					MakeRightSubTree(rootNode, nodeOperator);
+					rootNode->right = MakeNode();
+					nodeOperator = rootNode->right;
+//					temp->data = nextOperator; 연산자 값 대입은 TP에서
+//					MakeRightSubTree(nodeOperator, temp);
+				}
+				else {
+					
+				/* 우선순위가 낮거나 같을 때  */
 					MakeRightSubTree(nodeOperator, nodeOperand);
-					nodeOperand = nodeOperator;
+					if(rootNode == )
+						rootNode = nodeOperator;
+					nodeOperator = MakeNode();
+					/* nodeOperand = nodeOperator; */
+//					nodeOperator = MakeNode();
+					
 				}
 			}
 		}
