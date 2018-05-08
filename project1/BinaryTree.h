@@ -20,7 +20,6 @@ Node* GetRightSubTree(Node* tree);
 
 void MakeLeftSubTree(Node* parent, Node* child);
 void MakeRightSubTree(Node* parent, Node* child);
-void PreorderTraverse(Node* tree, VisitFuncPtr action);
-void PostorderTraverse(Node* tree, VisitFuncPtr action);
+void Traverse(Node* tree, VisitFuncPtr action, VisitFuncPtr action2);
 
 #endif

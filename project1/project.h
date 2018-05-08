@@ -11,7 +11,6 @@ void censorInt(char**);
 void censorSpec(char*);
 void censorOper(char*);
 void toUpper(char*);
-void printTable(void);
 
 char id_table[MAX_DBNUM][STR_LENG];
 char str_table[MAX_DBNUM][STR_LENG];
