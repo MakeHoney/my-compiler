@@ -94,7 +94,7 @@ void TP() {
 		if(rootNode->data != NULL)
 			MakeRightSubTree(rootNode, nodeOperator);
 		MakeLeftSubTree(nodeOperator, nodeOperand);
-		printf("operand : %s\n", nodeOperand->data);
+
 		F();
 		TP();
 	} else

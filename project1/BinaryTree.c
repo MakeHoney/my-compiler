@@ -27,15 +27,15 @@ Node* GetRightSubTree(Node* tree) {
 }
 
 void MakeLeftSubTree(Node* parent, Node* child) {
-	if(parent->left != NULL)
-		free(parent->left);
+//	if(parent->left != NULL)
+//		free(parent->left);
 
 	parent->left = child;
 }
 
 void MakeRightSubTree(Node* parent, Node* child) {
-	if(parent->right != NULL)
-		free(parent->right);
+//	if(parent->right != NULL)
+//		free(parent->right);
 
 	parent->right = child;
 }
