@@ -2,6 +2,7 @@
 #define __GRAMMAR_H__
 
 #define MAX_DBNUM	1000
+#define MAX_PARTH	100
 #define STR_LENG	20
 
 extern char token_table[][STR_LENG];

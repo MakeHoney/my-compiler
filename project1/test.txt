@@ -1,1 +1,2 @@
-a+b+/c+d*d+d = a*b/q/u/e*d+d*a+d*f*f+f*f
+(c-d)/(a+b)
+

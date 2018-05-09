@@ -8,12 +8,17 @@
 char* lookahead = NULL;
 int lookahead_ptr = 0;
 int cnt = 1;
+int parth_ptr = 0;
 
 Node* rootNode = NULL;
 Node* temp = NULL;
 Node* nodeOperator = NULL;
 Node* nodeOperand = NULL;
+Node* room[3] = {NULL, NULL, NULL};
+//Node* parthRootNode[MAX_PARTH] = {NULL, };
+Node* parthRootNode = NULL;
 bool ep_flag = false;
+bool parth_flag = false;
 
 void initialize() {
 	rootNode = NULL;
@@ -24,7 +29,7 @@ void initialize() {
 
 void ShowData(char* data) {
 	if(!strcmp(data, "id"))
-		printf("<%s>%s</%s>\n", data, id_table[cnt++], data);
+		printf("<%s>%s</%s>\n", data, id_table[cnt++], data); 
 	else
 		printf("<%s>\n", data);
 }
@@ -39,7 +44,10 @@ void XML() {
 	nodeOperator = MakeNode();
 	nodeOperand = MakeNode();
 	E();
-	if(!ep_flag) rootNode = nodeOperator;
+	if(!ep_flag) {
+		rootNode = nodeOperator;
+		if(parth_flag) rootNode = nodeOperand;
+	}
 	puts("Traversal start!");
 	Traverse(rootNode, ShowData, ShowData2);
 	free(nodeOperator);
@@ -71,9 +79,9 @@ void EP() {
 //	fputs("EP()\n", stdout);
 	lookahead = token_table[lookahead_ptr];
 	if(!strcmp(lookahead, "plus") || !strcmp(lookahead, "minus")) {
-		ep_flag = true;
+		if(!parth_flag) ep_flag = true;
 		match(lookahead);
-		if(rootNode->data != NULL) temp = rootNode;
+		if(rootNode->data != NULL && !parth_flag) temp = rootNode;
 		rootNode = MakeNode();
 		rootNode->data = lookahead;
 		if(temp != NULL) MakeLeftSubTree(rootNode, temp);
@@ -122,10 +130,9 @@ void TP() {
 		match(lookahead);
 		nodeOperator = MakeNode();
 		nodeOperator->data = lookahead;
-		if(rootNode->data != NULL)
+		if(rootNode->data != NULL && !parth_flag)
 			MakeRightSubTree(rootNode, nodeOperator);
 		MakeLeftSubTree(nodeOperator, nodeOperand);
-
 		F();
 		TP();
 	} else
@@ -135,24 +142,42 @@ void TP() {
 void F() {
 //	fputs("F()\n", stdout);
 	lookahead = token_table[lookahead_ptr];
-	char* nextOperator = token_table[lookahead_ptr + 1];
+//	char* nextOperator = token_table[lookahead_ptr + 1];
 	if(!strcmp(lookahead, "(")) {
+		parth_flag = true;
 		match(lookahead);
+		room[0] = rootNode; rootNode = MakeNode();
+		room[1] = nodeOperator; nodeOperator = MakeNode();
+		room[2] = nodeOperand; nodeOperand = MakeNode();
 		E();
-		//lookahead = token_table[lookahead_ptr]; 필요?
+		parthRootNode = rootNode;
+//		if(room[0]->data == NULL) rootNode = parthRootNode;
+		/*else*/ rootNode = room[0];
+		nodeOperator = room[1];
+		nodeOperand = room[2];
+		char* nextOperator = token_table[lookahead_ptr + 1];
 		match(lookahead);
-	} else {
-		if(!strcmp(lookahead, "id")) {
-			match(lookahead);
-			nodeOperand = MakeNode();
-			nodeOperand->data = lookahead;
-			if(nodeOperator->data != NULL) {
-				if(priority(nextOperator) <= priority(nodeOperator->data) ||
-						!strcmp(nextOperator, "EOF")) {
-					MakeRightSubTree(nodeOperator, nodeOperand);
-					nodeOperand = nodeOperator;
-				}
+		nodeOperand = parthRootNode;
+		if(nodeOperator->data != NULL) {
+			if(priority(nextOperator) <= priority(nodeOperator->data) ||
+					!strcmp(nextOperator, "EOF") || strcmp(nextOperator, ")")) {
+				MakeRightSubTree(nodeOperator, nodeOperand);
+				nodeOperand = nodeOperator;
 			}
 		}
-	}
+	} else if(!strcmp(lookahead, "id")) {
+		char* nextOperator = token_table[lookahead_ptr + 1];
+		match(lookahead);
+		nodeOperand = MakeNode();
+		nodeOperand->data = lookahead;
+		if(nodeOperator->data != NULL) {
+			if(priority(nextOperator) <= priority(nodeOperator->data) ||
+					!strcmp(nextOperator, "EOF") || !strcmp(nextOperator, ")")) {
+				MakeRightSubTree(nodeOperator, nodeOperand);
+				nodeOperand = nodeOperator;
+			}
+		}
+	} else
+		return;
 }
+
