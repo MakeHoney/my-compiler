@@ -13,10 +13,14 @@ void censorOper(char*);
 void toUpper(char*);
 
 char id_table[MAX_DBNUM][STR_LENG];
+char int_table[MAX_DBNUM][STR_LENG];
+char float_table[MAX_DBNUM][STR_LENG];
 char str_table[MAX_DBNUM][STR_LENG];
 char token_table[MAX_DBNUM][STR_LENG];
 
 int id_ptr = 0;
+int int_ptr = 0;
+int float_ptr = 0;
 int str_ptr = 0;
 int tok_ptr = -1;
 

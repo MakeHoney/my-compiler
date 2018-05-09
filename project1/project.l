@@ -14,14 +14,19 @@
 [ \t\n]+								{ ; }
 (\/\/.*)								{ ; }
 (\/\*(\n|.)*\*\/)							{ ; }
-[+|-]?[0-9]+							{	
-											censorInt(&yytext);
-											printf("<INTEGER>\t%s\n", yytext);
-										}
-
-[+|-]?(([0-9]+)|([0-9]*\.[0-9]+)([eE][-+]?[0-9]+)?) { printf("<FLOAT>\t\t%s\n", yytext); }
 
 [+\-*/=]|(and)|(or)|(eq)|(gt)			{ censorOper(yytext); }
+
+[0-9]+									{	
+											censorInt(&yytext);
+										}
+
+(([0-9]+)|([0-9]*\.[0-9]+)([eE][-+]?[0-9]+)?) { 
+	tok_ptr++;
+	strcpy(token_table[tok_ptr], "float");	
+	strcpy(float_table[++float_ptr], yytext);
+}
+
 
 
 [a-zA-Z_][a-zA-Z0-9_]*					{ censorId(yytext); }
@@ -46,7 +51,7 @@ int main(int argc, char* argv[])
 int yywrap(void)
 {
 	strcpy(token_table[++tok_ptr], "EOF");
-//	for(int i = 0 ; i < tok_ptr + 1 ; i++) printf("%s\n", token_table[i]);
+//	for(int i = 0 ; i < tok_ptr + 1 ; i++) printf("%s\n", id_table[i]);
 	XML();
 	return 1;
 }
@@ -122,9 +127,12 @@ void censorId(char* text) {
 
 }
 void censorInt(char** text) {
+	tok_ptr++;
 	int length = strlen(*text);
 	/* 길이가 10 이상일 때는 나머지 cut */
 	if(length > 10) *text += length - 10;
+	strcpy(token_table[tok_ptr], "int");
+	strcpy(int_table[++int_ptr], *text);
 }
 
 void censorSpec(char* text) {

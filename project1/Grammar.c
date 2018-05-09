@@ -7,7 +7,9 @@
 
 char* lookahead = NULL;
 int lookahead_ptr = 0;
-int cnt = 1;
+int id_cnt = 1;
+int int_cnt = 1;
+int float_cnt = 1;
 int parth_ptr = 0;
 
 Node* rootNode = NULL;
@@ -17,8 +19,11 @@ Node* nodeOperand = NULL;
 Node* room[3] = {NULL, NULL, NULL};
 //Node* parthRootNode[MAX_PARTH] = {NULL, };
 Node* parthRootNode = NULL;
+
 bool ep_flag = false;
 bool parth_flag = false;
+bool single_flag = false;
+bool assign_flag = false;
 
 void initialize() {
 	rootNode = NULL;
@@ -29,13 +34,19 @@ void initialize() {
 
 void ShowData(char* data) {
 	if(!strcmp(data, "id"))
-		printf("<%s>%s</%s>\n", data, id_table[cnt++], data); 
+		printf("<%s>%s</%s>\n", data, id_table[id_cnt++], data); 
+	else if(!strcmp(data, "int"))
+		printf("<%s>%s</%s>\n", data, int_table[int_cnt++], data);
+	else if(!strcmp(data, "float")){
+//		printf("here\n");
+		printf("<%s>%s</%s>\n", data, float_table[float_cnt++], data);
+	}
 	else
 		printf("<%s>\n", data);
 }
 
 void ShowData2(char* data) {
-	if(strcmp(data, "id"))
+	if(strcmp(data, "id") && strcmp(data, "int") && strcmp(data, "float"))
 		printf("</%s>\n", data);
 }
 
@@ -44,9 +55,9 @@ void XML() {
 	nodeOperator = MakeNode();
 	nodeOperand = MakeNode();
 	E();
-	if(!ep_flag) {
+	if(!ep_flag && !single_flag && !assign_flag) {
 		rootNode = nodeOperator;
-		if(parth_flag) rootNode = nodeOperand;
+		if(parth_flag && !assign_flag) rootNode = nodeOperand;
 	}
 	puts("Traversal start!");
 	Traverse(rootNode, ShowData, ShowData2);
@@ -93,10 +104,13 @@ void EP() {
 		/* assign 두번 이상은 에러 출력 */
 		/* lookahead_ptr은 유지된다. */
 		/* E`이 return되면 전체가 끝나느 것 */
+		char* tmpLookPtr = lookahead;
 		match(lookahead);
 		Node* tp1; Node* tp2;
-
-		tp1 = rootNode; 
+		/* 좌변 id 하나인 경우 예외처리 */
+		assign_flag = true;
+		if(lookahead_ptr == 2) tp1 = nodeOperand;
+        else tp1 = rootNode;
 		initialize();
 
 		rootNode = MakeNode();
@@ -104,14 +118,18 @@ void EP() {
 		nodeOperand = MakeNode();
 
 		E();
-
-		tp2 = rootNode; 
+		
+		if(parth_flag) tp2 = nodeOperand;
+		else tp2 = rootNode;
+	//	printf("tp2 : %s\n", tp2->data);
 		rootNode = MakeNode();
-		rootNode->data = "assign";
-
+		rootNode->data = tmpLookPtr;
+//		Traverse(tp1, ShowData, ShowData2);
+//		printf("%s\n", token_table[tok_ptr]);
+//		printf("%s\n", rootNode->data);
+//		Traverse(tp2, ShowData, ShowData2);
 		MakeLeftSubTree(rootNode, tp1);
 		MakeRightSubTree(rootNode, tp2);
-
 		return;
 	} else
 		return;
@@ -142,7 +160,6 @@ void TP() {
 void F() {
 //	fputs("F()\n", stdout);
 	lookahead = token_table[lookahead_ptr];
-//	char* nextOperator = token_table[lookahead_ptr + 1];
 	if(!strcmp(lookahead, "(")) {
 		parth_flag = true;
 		match(lookahead);
@@ -151,8 +168,7 @@ void F() {
 		room[2] = nodeOperand; nodeOperand = MakeNode();
 		E();
 		parthRootNode = rootNode;
-//		if(room[0]->data == NULL) rootNode = parthRootNode;
-		/*else*/ rootNode = room[0];
+		rootNode = room[0];
 		nodeOperator = room[1];
 		nodeOperand = room[2];
 		char* nextOperator = token_table[lookahead_ptr + 1];
@@ -165,13 +181,17 @@ void F() {
 				nodeOperand = nodeOperator;
 			}
 		}
-	} else if(!strcmp(lookahead, "id")) {
+	} else if(!strcmp(lookahead, "id") || !strcmp(lookahead, "int") || !strcmp(lookahead, "float")) {
 		char* nextOperator = token_table[lookahead_ptr + 1];
 		match(lookahead);
 		nodeOperand = MakeNode();
 		nodeOperand->data = lookahead;
-		if(nodeOperator->data != NULL) {
-			if(priority(nextOperator) <= priority(nodeOperator->data) ||
+		if(!strcmp(token_table[lookahead_ptr], "EOF") && lookahead_ptr == 1) {
+			single_flag = true;
+			rootNode = nodeOperand;
+		}
+			if(nodeOperator->data != NULL) {
+				if(priority(nextOperator) <= priority(nodeOperator->data) ||
 					!strcmp(nextOperator, "EOF") || !strcmp(nextOperator, ")")) {
 				MakeRightSubTree(nodeOperator, nodeOperand);
 				nodeOperand = nodeOperator;

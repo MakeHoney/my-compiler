@@ -7,6 +7,8 @@
 
 extern char token_table[][STR_LENG];
 extern char id_table[][STR_LENG];
+extern char int_table[][STR_LENG];
+extern char float_table[][STR_LENG];
 extern int tok_ptr;
 
 void initialize();
