@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "Grammar.h"
 #include "BinaryTree.h"
 
@@ -12,6 +13,7 @@ Node* rootNode = NULL;
 Node* temp = NULL;
 Node* nodeOperator = NULL;
 Node* nodeOperand = NULL;
+bool ep_flag = false;
 
 void initialize() {
 	rootNode = NULL;
@@ -37,6 +39,7 @@ void XML() {
 	nodeOperator = MakeNode();
 	nodeOperand = MakeNode();
 	E();
+	if(!ep_flag) rootNode = nodeOperator;
 	puts("Traversal start!");
 	Traverse(rootNode, ShowData, ShowData2);
 	free(nodeOperator);
@@ -67,7 +70,8 @@ void E() {
 void EP() {
 //	fputs("EP()\n", stdout);
 	lookahead = token_table[lookahead_ptr];
-	if(!strcmp(lookahead, "plus") || !strcmp(lookahead, "minus") || !strcmp(lookahead, "assign")) {
+	if(!strcmp(lookahead, "plus") || !strcmp(lookahead, "minus")) {
+		ep_flag = true;
 		match(lookahead);
 		if(rootNode->data != NULL) temp = rootNode;
 		rootNode = MakeNode();
@@ -77,6 +81,30 @@ void EP() {
 		nodeOperator = rootNode;
 		T();
 		EP();
+	} else if(!strcmp(lookahead, "assign")) {
+		/* assign 두번 이상은 에러 출력 */
+		/* lookahead_ptr은 유지된다. */
+		/* E`이 return되면 전체가 끝나느 것 */
+		match(lookahead);
+		Node* tp1; Node* tp2;
+
+		tp1 = rootNode; 
+		initialize();
+
+		rootNode = MakeNode();
+		nodeOperator = MakeNode();
+		nodeOperand = MakeNode();
+
+		E();
+
+		tp2 = rootNode; 
+		rootNode = MakeNode();
+		rootNode->data = "assign";
+
+		MakeLeftSubTree(rootNode, tp1);
+		MakeRightSubTree(rootNode, tp2);
+
+		return;
 	} else
 		return;
 }
