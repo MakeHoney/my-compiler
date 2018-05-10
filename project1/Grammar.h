@@ -14,6 +14,7 @@ extern char print[4096];
 
 void initialize();
 void XML();
+bool error();
 void E();
 void EP();
 void T();

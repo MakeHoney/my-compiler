@@ -68,16 +68,43 @@ void ShowData2(char* data) {
 void XML() {
 	rootNode = MakeNode();
 	nodeOperator = MakeNode();
-	nodeOperand = MakeNode();
-	E();
-	if(!ep_flag && !single_flag && !assign_flag && parth_cnt <= 2) {
-		rootNode = nodeOperator;
-//		if(parth_flag) rootNode = nodeOperand;
+	if(error()) {
+		printf("syntax error\n");
+		exit(0);
+	} else {
+		nodeOperand = MakeNode();
+		E();
+		if(!ep_flag && !single_flag && !assign_flag && parth_cnt <= 2) {
+			rootNode = nodeOperator;
+		}
+	//	puts("Traversal start!");
+		Traverse(rootNode, ShowData, ShowData2);
+		free(rootNode);
+		initialize();
 	}
-//	puts("Traversal start!");
-	Traverse(rootNode, ShowData, ShowData2);
-	free(rootNode);
-	initialize();
+}
+
+bool error(){
+	bool assign = false;
+	bool twice = false;
+	for(int i = 0 ; i < tok_ptr + 1 ; i ++){
+		if((!strcmp(token_table[i], "plus") && !strcmp(token_table[i+1], "plus")) ||
+				(!strcmp(token_table[i], "mult") && !strcmp(token_table[i+1], "mult")) ||
+				(!strcmp(token_table[i], "div") && !strcmp(token_table[i+1], "div"))){
+			twice = true;
+		}
+		if(!strcmp(token_table[i], "assign"))
+			assign = true;
+	}
+	if((!strcmp(token_table[0], "int") || !strcmp(token_table[0], "float"))
+			&& !strcmp(token_table[1], "assign")) 
+		return true;
+	else if(strcmp(token_table[1], "assign") && assign)
+		return true;
+	else if(twice)
+		return true;
+	else return false;
+	
 }
 
 void match(char* str) {

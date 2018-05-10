@@ -26,7 +26,9 @@
 	strcpy(float_table[++float_ptr], yytext);
 }
 
-[\n] 	{ strcpy(token_table[++tok_ptr], "EOF"); XML(); printf("%s", print); tok_ptr = -1; }
+[\n] 	{ 
+//	for(int i = 0 ; i < tok_ptr + 1 ; i++) printf("%s\n", token_table[i]);
+	strcpy(token_table[++tok_ptr], "EOF"); XML(); printf("%s", print); tok_ptr = -1; }
 
 [a-zA-Z_][a-zA-Z0-9_]*					{ censorId(yytext); }
 
@@ -150,6 +152,7 @@ void censorOper(char* text) {
 		else if(text[0] == '+')	strcpy(token_table[tok_ptr], "plus");
 		else if(text[0] == '-') strcpy(token_table[tok_ptr], "minus");
 		else if(text[0] == '*')	strcpy(token_table[tok_ptr], "mult");
-		else					strcpy(token_table[tok_ptr], "div");
+		else if(text[0] == '/')	strcpy(token_table[tok_ptr], "div");
+		else;
 	}
 }
