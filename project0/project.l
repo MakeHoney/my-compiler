@@ -29,7 +29,7 @@
 
 [",();]									{ censorSpec(yytext); }
 
-.                     					{ yyerror(); }
+.                     					{ printf("Aaa");yyerror(); }
 
 <<EOF>>									{ printTable(); exit(0); }
 

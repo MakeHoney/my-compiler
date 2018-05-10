@@ -5,11 +5,13 @@
 #include "Grammar.h"
 #include "BinaryTree.h"
 
+char buf[128];
 char* lookahead = NULL;
 int lookahead_ptr = 0;
 int id_cnt = 1;
 int int_cnt = 1;
 int float_cnt = 1;
+int parth_cnt = 0;
 int parth_ptr = 0;
 
 Node* rootNode = NULL;
@@ -17,8 +19,8 @@ Node* temp = NULL;
 Node* nodeOperator = NULL;
 Node* nodeOperand = NULL;
 Node* room[3] = {NULL, NULL, NULL};
-//Node* parthRootNode[MAX_PARTH] = {NULL, };
 Node* parthRootNode = NULL;
+
 
 bool ep_flag = false;
 bool parth_flag = false;
@@ -33,21 +35,34 @@ void initialize() {
 }
 
 void ShowData(char* data) {
-	if(!strcmp(data, "id"))
-		printf("<%s>%s</%s>\n", data, id_table[id_cnt++], data); 
-	else if(!strcmp(data, "int"))
-		printf("<%s>%s</%s>\n", data, int_table[int_cnt++], data);
-	else if(!strcmp(data, "float")){
-//		printf("here\n");
-		printf("<%s>%s</%s>\n", data, float_table[float_cnt++], data);
+	if(!strcmp(data, "id")){
+		memset(buf, 0x00, 128);
+		sprintf(buf, "<%s>%s</%s>\n", data, id_table[id_cnt++], data); 
+		strcat(print, buf);
 	}
-	else
-		printf("<%s>\n", data);
+	else if(!strcmp(data, "int")){
+		memset(buf, 0x00, 128);
+		sprintf(buf, "<%s>%s</%s>\n", data, int_table[int_cnt++], data);
+		strcat(print, buf);
+	}
+	else if(!strcmp(data, "float")){
+		memset(buf, 0x00, 128);
+		sprintf(buf, "<%s>%s</%s>\n", data, float_table[float_cnt++], data);
+		strcat(print, buf);
+	}
+	else{
+		memset(buf, 0x00, 128);
+		sprintf(buf, "<%s>\n", data);
+		strcat(print, buf);
+	}
 }
 
 void ShowData2(char* data) {
-	if(strcmp(data, "id") && strcmp(data, "int") && strcmp(data, "float"))
-		printf("</%s>\n", data);
+	if(strcmp(data, "id") && strcmp(data, "int") && strcmp(data, "float")){
+		memset(buf, 0x00, 128);
+		sprintf(buf, "</%s>\n", data);
+		strcat(print, buf);
+	}
 }
 
 void XML() {
@@ -55,13 +70,13 @@ void XML() {
 	nodeOperator = MakeNode();
 	nodeOperand = MakeNode();
 	E();
-	if(!ep_flag && !single_flag && !assign_flag) {
+	if(!ep_flag && !single_flag && !assign_flag && parth_cnt <= 2) {
 		rootNode = nodeOperator;
-		if(parth_flag && !assign_flag) rootNode = nodeOperand;
+//		if(parth_flag) rootNode = nodeOperand;
 	}
-	puts("Traversal start!");
+//	puts("Traversal start!");
 	Traverse(rootNode, ShowData, ShowData2);
-	free(nodeOperator);
+	free(rootNode);
 	initialize();
 }
 
@@ -89,25 +104,27 @@ void E() {
 void EP() {
 //	fputs("EP()\n", stdout);
 	lookahead = token_table[lookahead_ptr];
+
 	if(!strcmp(lookahead, "plus") || !strcmp(lookahead, "minus")) {
 		if(!parth_flag) ep_flag = true;
 		match(lookahead);
+
 		if(rootNode->data != NULL && !parth_flag) temp = rootNode;
 		rootNode = MakeNode();
 		rootNode->data = lookahead;
 		if(temp != NULL) MakeLeftSubTree(rootNode, temp);
 		else MakeLeftSubTree(rootNode, nodeOperand);
 		nodeOperator = rootNode;
+		temp = NULL;
 		T();
 		EP();
+
 	} else if(!strcmp(lookahead, "assign")) {
-		/* assign 두번 이상은 에러 출력 */
 		/* lookahead_ptr은 유지된다. */
 		/* E`이 return되면 전체가 끝나느 것 */
 		char* tmpLookPtr = lookahead;
 		match(lookahead);
 		Node* tp1; Node* tp2;
-		/* 좌변 id 하나인 경우 예외처리 */
 		assign_flag = true;
 		if(lookahead_ptr == 2) tp1 = nodeOperand;
         else tp1 = rootNode;
@@ -121,16 +138,13 @@ void EP() {
 		
 		if(parth_flag) tp2 = nodeOperand;
 		else tp2 = rootNode;
-	//	printf("tp2 : %s\n", tp2->data);
 		rootNode = MakeNode();
 		rootNode->data = tmpLookPtr;
-//		Traverse(tp1, ShowData, ShowData2);
-//		printf("%s\n", token_table[tok_ptr]);
-//		printf("%s\n", rootNode->data);
-//		Traverse(tp2, ShowData, ShowData2);
+
 		MakeLeftSubTree(rootNode, tp1);
 		MakeRightSubTree(rootNode, tp2);
 		return;
+
 	} else
 		return;
 }
@@ -148,9 +162,10 @@ void TP() {
 		match(lookahead);
 		nodeOperator = MakeNode();
 		nodeOperator->data = lookahead;
-		if(rootNode->data != NULL && !parth_flag)
+		if(rootNode->data != NULL)  // !parthflag
 			MakeRightSubTree(rootNode, nodeOperator);
 		MakeLeftSubTree(nodeOperator, nodeOperand);
+
 		F();
 		TP();
 	} else
@@ -161,22 +176,30 @@ void F() {
 //	fputs("F()\n", stdout);
 	lookahead = token_table[lookahead_ptr];
 	if(!strcmp(lookahead, "(")) {
+
+		parth_cnt++;
 		parth_flag = true;
 		match(lookahead);
 		room[0] = rootNode; rootNode = MakeNode();
 		room[1] = nodeOperator; nodeOperator = MakeNode();
 		room[2] = nodeOperand; nodeOperand = MakeNode();
 		E();
+		if(parth_cnt <= 2) rootNode = nodeOperand;
 		parthRootNode = rootNode;
 		rootNode = room[0];
 		nodeOperator = room[1];
 		nodeOperand = room[2];
 		char* nextOperator = token_table[lookahead_ptr + 1];
-		match(lookahead);
+		match(lookahead);	
+			
 		nodeOperand = parthRootNode;
+		if(!strcmp(token_table[lookahead_ptr], "EOF") && parth_cnt == 1) {
+			single_flag = true;
+			rootNode = nodeOperand;
+		}
 		if(nodeOperator->data != NULL) {
 			if(priority(nextOperator) <= priority(nodeOperator->data) ||
-					!strcmp(nextOperator, "EOF") || strcmp(nextOperator, ")")) {
+					!strcmp(nextOperator, "EOF") || (!strcmp(nextOperator, ")"))) {
 				MakeRightSubTree(nodeOperator, nodeOperand);
 				nodeOperand = nodeOperator;
 			}

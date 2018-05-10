@@ -17,6 +17,7 @@ char int_table[MAX_DBNUM][STR_LENG];
 char float_table[MAX_DBNUM][STR_LENG];
 char str_table[MAX_DBNUM][STR_LENG];
 char token_table[MAX_DBNUM][STR_LENG];
+char print[4096];
 
 int id_ptr = 0;
 int int_ptr = 0;

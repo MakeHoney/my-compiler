@@ -10,6 +10,7 @@ extern char id_table[][STR_LENG];
 extern char int_table[][STR_LENG];
 extern char float_table[][STR_LENG];
 extern int tok_ptr;
+extern char print[4096];
 
 void initialize();
 void XML();

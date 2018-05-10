@@ -10,9 +10,8 @@
 %}
 
 %%
-
-[ \t\n]+								{ ; }
-(\/\/.*)								{ ; }
+[ \t]+									{ ; }
+(\/\/.*)									{ ; }
 (\/\*(\n|.)*\*\/)							{ ; }
 
 [+\-*/=]|(and)|(or)|(eq)|(gt)			{ censorOper(yytext); }
@@ -27,7 +26,7 @@
 	strcpy(float_table[++float_ptr], yytext);
 }
 
-
+[\n] 	{ strcpy(token_table[++tok_ptr], "EOF"); XML(); printf("%s", print); tok_ptr = -1; }
 
 [a-zA-Z_][a-zA-Z0-9_]*					{ censorId(yytext); }
 
@@ -40,8 +39,6 @@
 
 %%
 
-// 테스트용 주석추가
-// 문자열, 주석 개행 처리하기
 int main(int argc, char* argv[])
 {
 	yyparse();
@@ -50,9 +47,10 @@ int main(int argc, char* argv[])
 
 int yywrap(void)
 {
-	strcpy(token_table[++tok_ptr], "EOF");
+//	strcpy(token_table[++tok_ptr], "EOF");
 //	for(int i = 0 ; i < tok_ptr + 1 ; i++) printf("%s\n", id_table[i]);
-	XML();
+//	XML();
+//	printf("%s", print);
 	return 1;
 }
 
