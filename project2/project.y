@@ -28,6 +28,7 @@
 
 %token <vblno> VARIABLE
 %token <dval> NUMBER
+
 %token WHILE IF PRINT
 %nonassoc ELSE END
 
@@ -52,8 +53,8 @@ expr:
     | VARIABLE  { 
   			           if($1>t)
                     {
-  		               printf("%s is not defined\n", symbolTable[$1]);
-                     exit(1);
+      	               printf("%s는 정의되지 않은 변수입니다.\n", symbolTable[$1]);
+                     //exit(1);
                     }
                     $$ = symVal[$1];
                 }
@@ -81,7 +82,7 @@ expr:
 
     | expr '/' expr          { 
                   							if($3 == 0)
-                  							 yyerror("you can't divide by 0.");
+                  							 yyerror("0으로 나눌 수 없습니다.");
                   							else {
                   							 Node* root = MakeBunch('/', $1, $3);
                                  $$ = Traverse(root);  

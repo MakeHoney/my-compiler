@@ -33,7 +33,7 @@ ne			  	[!][=]
 
 {end}		{ return END;}
 {while}		{ return WHILE;}
-{if}		{ printf("this is if\n"); return IF;}
+{if}		{ return IF;}
 {else}		{ return ELSE;}
 
 
@@ -49,13 +49,11 @@ ne			  	[!][=]
 
              strcpy(symbolTable[top++], yytext);
              yylval.vblno = top-1;
-             flag++;
              return VARIABLE;
           }
 
 {number}   {
       yylval.dval =atof(yytext);
-      flag++;
       return NUMBER;
       }
 {under_bar} { yyerror("lexical error\n");}
