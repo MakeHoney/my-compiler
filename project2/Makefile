@@ -1,5 +1,5 @@
 project.o : lex.yy.c project.tab.c project.tab.h
-	gcc -o project project.tab.c lex.yy.c -lm
+	gcc -o project project.tab.c lex.yy.c BinaryTree.c -lm
 
 lex.yy.c : project.l
 	flex project.l

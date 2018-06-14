@@ -2,10 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Hello.tab.h"
+#include "project.tab.h"
 
 char symbolTable[100][17];
 int top=0;
+int flag = 0;
 int yyerror(char* c);
 
 %}
@@ -13,19 +14,27 @@ int yyerror(char* c);
 identifier		(_|[a-z]|[A-Z])[a-zA-Z0-9_]*
 number			(([1-9][0-9]*)|0)(\.[0-9]*)?
 under_bar		[_]*
-if				[i][f]
-else			[e][l][s][e]
-while			[w][h][i][l][e]
-end				[e][n][d]
-l				[>]
-le				[>][=]
-s				[<]
-se				[<][=]
-ee				[=][=]
-ne				[!][=]
+print       [p][r][i][n][t]
+if			   	[i][f]
+else		  	[e][l][s][e]
+while			  [w][h][i][l][e]
+end				  [e][n][d]
+l			  	  [>]
+le				  [>][=]
+s			  	  [<]
+se			  	[<][=]
+ee			  	[=][=]
+ne			  	[!][=]
 
 
 %%
+
+{print} { return PRINT; }
+
+{end}		{ return END;}
+{while}		{ return WHILE;}
+{if}		{ printf("this is if\n"); return IF;}
+{else}		{ return ELSE;}
 
 
 {identifier} {
@@ -40,31 +49,29 @@ ne				[!][=]
 
              strcpy(symbolTable[top++], yytext);
              yylval.vblno = top-1;
+             flag++;
              return VARIABLE;
           }
 
 {number}   {
       yylval.dval =atof(yytext);
+      flag++;
       return NUMBER;
       }
-{under_bar}	{yyerror("lexical error\n");}
-
-{end}		{return END;}
-{while}		{return WHILE;}
-{if}		{return IF;}
-{else}		{return ELSE;}
-{l}			{return L;}
-{le}		{return LE;}
-{s}			{return S;}
-{se}		{return SE;}
-{ee}		{return EE;}
-{ne}		{return NE;}
+{under_bar} { yyerror("lexical error\n");}
+{l}			{ return L;}
+{le}		{ return LE;}
+{s}			{ return S;}
+{se}		{ return SE;}
+{ee}		{ return EE;}
+{ne}		{ return NE;}
 
 
  
 [-+()=/*;] {return *yytext;}
 
-[ \n\t]   ;     
+[ \n\t]  { 
+            ; }     
 .       yyerror("lexical error");
 
 %%
